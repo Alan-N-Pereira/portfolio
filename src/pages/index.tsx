@@ -29,6 +29,6 @@ export default function HomePage() {
   }, []);
 
   return(
-    <div id="phaser-container" style={{width:'100vw',height: '100vh', overflow: 'hidden'}}/>
+    <div id="phaser-container" style={{width:'100vw',height: '100vh', margin: 0, padding: 0, overflow: 'hidden'}}/>
   );
 }

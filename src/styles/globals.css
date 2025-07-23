@@ -11,9 +11,23 @@
 }
 
 html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+body,
+#__next,
+#phaser-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+}
+
+canvas {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 body {
