@@ -10,24 +10,25 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 html,
 body,
 #__next,
 #phaser-container {
-  margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  display: block;
 }
 
 canvas {
   display: block;
-  margin: 0;
-  padding: 0;
-  width: 100% !important;
-  height: 100% !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 body {
@@ -38,11 +39,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
 
 a {
   color: inherit;
