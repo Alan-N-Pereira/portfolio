@@ -96,6 +96,16 @@ class MainScene extends Phaser.Scene {
         }
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+            this.playerTarget = new Phaser.Math.Vector2(pointer.worldX, pointer.worldY);
+            this.mouseMovedRecently = true;
+
+        // Reset after 1 second
+        this.time.delayedCall(0.01, () => {
+            this.mouseMovedRecently = false;
+        });
+        });
+
     }
 
     update() {
@@ -107,35 +117,42 @@ class MainScene extends Phaser.Scene {
         body.setVelocity(0);
 
         // Keyboard movement
-        if (this.cursors.left.isDown) {
-            body.setVelocityX(-speed);
-            return;
-        } else if (this.cursors.right.isDown) {
-            body.setVelocityX(speed);
-            return;
-        }
+        const left = this.cursors.left?.isDown;
+        const right = this.cursors.right?.isDown;
+        const up = this.cursors.up?.isDown;
+        const down = this.cursors.down?.isDown;
 
-        if (this.cursors.up.isDown) {
+        const isKeyboardPressed = left || right || up || down;
+
+        if (isKeyboardPressed) {
+            if (left) {
+            body.setVelocityX(-speed);
+            } else if (right) {
+            body.setVelocityX(speed);
+            }
+
+            if (up) {
             body.setVelocityY(-speed);
-            return;
-        } else if (this.cursors.down.isDown) {
+            } else if (down) {
             body.setVelocityY(speed);
+            }
+
+            // Cancel current mouse target when using keyboard
+            this.playerTarget = undefined;
             return;
         }
 
         // Mouse click-to-move
-        const pointer = this.input.activePointer;
-        const pointerWorldX = pointer.worldX;
-        const pointerWorldY = pointer.worldY;
+        if (this.playerTarget && this.mouseMovedRecently) {
+            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, this.playerTarget.x, this.playerTarget.y);
 
-        const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, pointerWorldX, pointerWorldY);
-
-        if (dist > 4) {
-            const angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, pointerWorldX, pointerWorldY);
-            body.setVelocity(
-            Math.cos(angle) * speed,
-            Math.sin(angle) * speed
-            );
+            if (dist > 4) {
+                const angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.playerTarget.x, this.playerTarget.y);
+                body.setVelocity(
+                    Math.cos(angle) * speed,
+                    Math.sin(angle) * speed
+                );
+            }
         }
     }
 }
